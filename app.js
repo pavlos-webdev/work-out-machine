@@ -261,10 +261,11 @@ function renumberSets(exId) {
  
 function openExercisePicker(exId) {
   currentExerciseTarget = exId;
+  const searchInput = document.getElementById('exercise-search');
+  searchInput.value = '';
   filterExercises();
   document.getElementById('exercise-modal').classList.add('open');
-  document.getElementById('exercise-search').value = '';
-  document.getElementById('exercise-search').focus();
+  searchInput.focus();
 }
  
 function closeModal(e) {
@@ -435,8 +436,10 @@ function renderSavedTemplates() {
   if (names.length === 0) {
 
     container.innerHTML = `
-      <div class="empty-state">
-        No saved templates yet.
+      <div class="template-empty">
+        <div class="template-empty-icon">💾</div>
+        <div class="template-empty-title">No saved templates yet</div>
+        <div class="template-empty-sub">Save a completed workout to reuse it here.</div>
       </div>
     `;
 
@@ -444,41 +447,25 @@ function renderSavedTemplates() {
   }
 
   container.innerHTML =
-    names.map(name => `
-
-      <div class="history-card">
-
-        <div class="history-name">
-          ${name}
+    names.map(name => {
+      const template = savedTemplates[name] || [];
+      const exercises = template.map(ex => `<span class="template-chip">${ex.name}</span>`).join('');
+      return `
+        <div class="template-card">
+          <div class="template-top">
+            <div class="template-name">${name}</div>
+            <div class="template-badge">Saved</div>
+          </div>
+          <div class="template-exercises">
+            ${exercises}
+          </div>
+          <div class="template-actions">
+            <button class="btn-secondary" onclick="startSavedTemplate('${name}')">Start</button>
+            <button class="btn-danger" onclick="deleteTemplate('${name}')">Delete</button>
+          </div>
         </div>
-
-        <div class="history-meta">
-          <span class="history-pill">
-            💾 Saved Template
-          </span>
-        </div>
-
-        <div style="margin-top:12px; display:flex; gap:8px;">
-
-          <button
-            class="btn-secondary"
-            onclick="startSavedTemplate('${name}')"
-          >
-            Start
-          </button>
-
-          <button
-            class="btn-danger"
-            onclick="deleteTemplate('${name}')"
-          >
-            Delete
-          </button>
-
-        </div>
-
-      </div>
-
-    `).join('');
+      `;
+    }).join('');
 }
 
 function toggleHistory(i) {
