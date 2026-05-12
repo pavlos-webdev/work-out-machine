@@ -43,6 +43,10 @@ const TEMPLATES = {
   'Leg Day': ['Squat','Romanian Deadlift','Leg Press','Leg Curl','Calf Raise'],
 };
  
+let savedTemplates = JSON.parse(
+  localStorage.getItem('lift_templates') || '{}'
+);
+
 let workouts = JSON.parse(localStorage.getItem('lift_workouts') || '[]');
 let currentWorkout = null;
 let timerInterval = null;
@@ -52,11 +56,20 @@ let currentExerciseTarget = null;
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.remove('active'));
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  const tabs = ['log','history','stats'];
+  const tabs = [
+  'log',
+  'templates',
+  'history',
+  'stats'
+  
+];
   document.querySelectorAll('.tab-btn')[tabs.indexOf(tab)].classList.add('active');
   document.getElementById('screen-' + tab).classList.add('active');
   if (tab === 'history') renderHistory();
   if (tab === 'stats') renderStats();
+
+  if (tab === 'templates')
+  renderSavedTemplates();
 }
  
 function startWorkout(name) {
@@ -90,6 +103,82 @@ function startFromTemplate(tplName) {
   document.getElementById('nav-sub').textContent = 'Workout in progress';
   const exs = TEMPLATES[tplName] || [];
   exs.forEach(name => addExercise(name));
+}
+
+function startSavedTemplate(templateName) {
+
+  const template =
+    savedTemplates[templateName];
+
+  if (!template) return;
+
+  currentWorkout = {
+    name: templateName,
+    date: new Date().toISOString(),
+    exercises: []
+  };
+
+  document.getElementById('workout-name').value =
+    templateName;
+
+  document.getElementById('log-idle').style.display =
+    'none';
+
+  document.getElementById('log-active').style.display =
+    'block';
+
+  document.getElementById('exercises-container').innerHTML =
+    '';
+
+  timerStart = Date.now();
+
+  timerInterval =
+    setInterval(updateTimer, 1000);
+
+  document.getElementById('nav-sub').textContent =
+    'Workout in progress';
+
+  template.forEach(exercise => {
+
+    addExercise(exercise.name);
+
+    const blocks =
+      document.querySelectorAll('.exercise-block');
+
+    const newest =
+      blocks[blocks.length - 1];
+
+    const exId = newest.id;
+
+    const setsContainer =
+      document.getElementById(exId + '-sets');
+
+    setsContainer.innerHTML = '';
+
+    setCounters[exId] = 0;
+
+    exercise.sets.forEach(set => {
+
+      addSet(exId);
+
+      const rows =
+        setsContainer.querySelectorAll('.set-row');
+
+      const newestRow =
+        rows[rows.length - 1];
+
+      newestRow.querySelector(
+        `input[id$="-reps"]`
+      ).value = set.reps;
+
+      newestRow.querySelector(
+        `input[id$="-weight"]`
+      ).value = set.weight;
+
+      newestRow.querySelector('select').value =
+        set.unit || 'lbs';
+    });
+  });
 }
  
 function updateTimer() {
@@ -223,6 +312,37 @@ function collectWorkoutData() {
   });
   return { name, exercises };
 }
+
+function saveCurrentAsTemplate() {
+
+  const { name, exercises } =
+    collectWorkoutData();
+
+  if (exercises.length === 0) {
+    alert('Add exercises first.');
+    return;
+  }
+
+  const templateName =
+    prompt(
+      'Template name:',
+      name
+    );
+
+  if (!templateName) return;
+
+  savedTemplates[templateName] =
+    exercises;
+
+  localStorage.setItem(
+    'lift_templates',
+    JSON.stringify(savedTemplates)
+  );
+
+  renderSavedTemplates();
+
+  alert('Workout template saved.');
+}
  
 function finishWorkout() {
   const { name, exercises } = collectWorkoutData();
@@ -302,6 +422,65 @@ function renderHistory() {
   }).join('');
 }
  
+function renderSavedTemplates() {
+
+  const container =
+    document.getElementById('saved-templates');
+
+  if (!container) return;
+
+  const names =
+    Object.keys(savedTemplates);
+
+  if (names.length === 0) {
+
+    container.innerHTML = `
+      <div class="empty-state">
+        No saved templates yet.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    names.map(name => `
+
+      <div class="history-card">
+
+        <div class="history-name">
+          ${name}
+        </div>
+
+        <div class="history-meta">
+          <span class="history-pill">
+            💾 Saved Template
+          </span>
+        </div>
+
+        <div style="margin-top:12px; display:flex; gap:8px;">
+
+          <button
+            class="btn-secondary"
+            onclick="startSavedTemplate('${name}')"
+          >
+            Start
+          </button>
+
+          <button
+            class="btn-danger"
+            onclick="deleteTemplate('${name}')"
+          >
+            Delete
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join('');
+}
+
 function toggleHistory(i) {
   const el = document.getElementById('hist-detail-' + i);
   el.classList.toggle('open');
@@ -315,6 +494,24 @@ function deleteWorkout(e, id) {
   renderStats();
 }
  
+function deleteTemplate(name) {
+
+  if (
+    !confirm(
+      `Delete template "${name}"?`
+    )
+  ) return;
+
+  delete savedTemplates[name];
+
+  localStorage.setItem(
+    'lift_templates',
+    JSON.stringify(savedTemplates)
+  );
+
+  renderSavedTemplates();
+}
+
 function renderStats() {
   document.getElementById('stat-total').textContent = workouts.length;
   const totalSets = workouts.reduce((a, w) => a + w.exercises.reduce((b, e) => b + e.sets.length, 0), 0);
@@ -361,4 +558,5 @@ function renderStats() {
   }
 }
  
+renderSavedTemplates();
 renderStats();

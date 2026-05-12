@@ -18,6 +18,12 @@
   <button class="tab-btn active" onclick="switchTab('log')">Log Workout</button>
   <button class="tab-btn" onclick="switchTab('history')">History</button>
   <button class="tab-btn" onclick="switchTab('stats')">Progress</button>
+  <button
+  class="tab-btn"
+  onclick="switchTab('templates')"
+>
+  Templates
+</button>
 </div>
  
 <!-- LOG SCREEN -->
@@ -29,6 +35,52 @@
       </button>
     </div>
  
+    <section class="card">
+
+  <h2>Create Workout Preset</h2>
+
+    <input
+      type="text"
+      id="presetName"
+      placeholder="Preset name"
+      style="
+        width:100%;
+        padding:12px;
+        margin-top:12px;
+        margin-bottom:12px;
+        border:1px solid #ddd;
+        border-radius:10px;
+      "
+    />
+
+    <div id="presetExercises"></div>
+
+    <button
+      id="addPresetExerciseBtn"
+      class="secondary-btn"
+    >
+      + Add Exercise
+    </button>
+    <button
+  class="btn-secondary"
+  onclick="saveCurrentAsTemplate()"
+  style="
+    width:100%;
+    margin-bottom:12px;
+  "
+>
+  💾 Save as Template
+</button>
+
+    <button
+      id="savePresetBtn"
+      class="primary-btn"
+      style="margin-top:12px;"
+    >
+      Save Preset
+    </button>
+
+  </section>
     <div class="section-header">Quick Start</div>
     <div class="card">
       <div style="padding: 4px 0;">
@@ -77,6 +129,16 @@
       <button onclick="finishWorkout()" style="flex:2; padding: 13px; background: var(--ios-green); color: #fff; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;">Finish Workout</button>
     </div>
   </div>
+</div>
+
+<!-- SAVED TEMPLATES -->
+<div class="screen" id="screen-templates">
+
+  <div
+    id="saved-templates"
+    style="padding-top:8px;"
+  ></div>
+
 </div>
  
 <!-- HISTORY SCREEN -->
