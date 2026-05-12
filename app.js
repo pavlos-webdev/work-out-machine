@@ -116,6 +116,153 @@ function addExercise() {
 
   exerciseContainer.appendChild(div);
 }
+function saveTemplate(name, exercises) {
+
+  const templates =
+    JSON.parse(
+      localStorage.getItem('lift_templates') || '[]'
+    );
+
+  templates.push({
+    id: Date.now(),
+    name,
+    exercises
+  });
+
+  localStorage.setItem(
+  'lift_workouts',
+  JSON.stringify(workouts)
+);
+
+const shouldSave =
+  confirm(
+    'Save this workout as a reusable template?'
+  );
+
+if (shouldSave) {
+  saveTemplate(workoutName, exercises);
+}
+
+  renderTemplates();
+}
+
+function renderTemplates() {
+
+  const container =
+    document.getElementById('templates');
+
+  const templates =
+    JSON.parse(
+      localStorage.getItem('lift_templates') || '[]'
+    );
+
+  if (templates.length === 0) {
+
+    container.innerHTML = `
+      <p style="color:#666;">
+        No saved workouts yet.
+      </p>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    templates.map(template => {
+
+      return `
+        <div class="history-item">
+
+          <strong>${template.name}</strong>
+
+          <div style="margin-top:6px;">
+            ${template.exercises.length} exercises
+          </div>
+
+          <button
+            class="primary-btn"
+            style="margin-top:12px;"
+            onclick="loadTemplate(${template.id})"
+          >
+            Start Workout
+          </button>
+
+        </div>
+      `;
+    }).join('');
+}
+
+window.loadTemplate = function(id) {
+
+  const templates =
+    JSON.parse(
+      localStorage.getItem('lift_templates') || '[]'
+    );
+
+  const template =
+    templates.find(t => t.id === id);
+
+  if (!template) return;
+
+  workoutSection.classList.remove('hidden');
+
+  subtitle.textContent =
+    'Workout in progress';
+
+  document.getElementById('workoutName').value =
+    template.name;
+
+  exerciseContainer.innerHTML = '';
+
+  template.exercises.forEach(exercise => {
+
+    const div =
+      document.createElement('div');
+
+    div.className = 'exercise';
+
+    div.innerHTML = `
+      <input
+        class="exercise-name"
+        type="text"
+        value="${exercise.name}"
+      />
+    `;
+
+    exercise.sets.forEach(set => {
+
+      const row =
+        document.createElement('div');
+
+      row.className = 'set-row';
+
+      row.innerHTML = `
+        <input
+          type="number"
+          placeholder="Reps"
+          value="${set.reps}"
+        />
+
+        <input
+          type="number"
+          placeholder="Weight"
+          value="${set.weight}"
+        />
+      `;
+
+      div.appendChild(row);
+    });
+
+    exerciseContainer.appendChild(div);
+  });
+
+  startTime = Date.now();
+
+  clearInterval(timerInterval);
+
+  timerInterval =
+    setInterval(updateTimer, 1000);
+}
 
 function renderHistory() {
   if (workouts.length === 0) {
@@ -137,3 +284,5 @@ function renderHistory() {
     `;
   }).join('');
 }
+renderTemplates();
+renderHistory();
