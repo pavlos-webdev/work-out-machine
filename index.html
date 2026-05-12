@@ -31,36 +31,28 @@
 
   <div class="tabs">
 
-    <button
-      class="tab-btn active"
-      onclick="switchTab('log')"
-    >
-      Log Workout
-    </button>
+  <button
+    class="tab-btn active"
+    onclick="switchTab('log')"
+  >
+    Log Workout
+  </button>
 
-    <button
-      class="tab-btn"
-      onclick="switchTab('templates')"
-    >
-      Templates
-    </button>
+  <button
+    class="tab-btn"
+    onclick="switchTab('history')"
+  >
+    History
+  </button>
 
-    <button
-      class="tab-btn"
-      onclick="switchTab('history')"
-    >
-      History
-    </button>
+  <button
+    class="tab-btn"
+    onclick="switchTab('stats')"
+  >
+    Progress
+  </button>
 
-    <button
-      class="tab-btn"
-      onclick="switchTab('stats')"
-    >
-      Progress
-    </button>
-
-  </div>
-
+</div>
   <!-- LOG SCREEN -->
 
   <div
@@ -84,149 +76,161 @@
 
       </div>
 
-      <!-- QUICK START -->
+     <!-- QUICK START -->
 
-      <div class="section-header">
-        Quick Start
-      </div>
+<div class="section-header">
+  Quick Start
+</div>
 
-      <div class="card">
+<!-- SAVE TEMPLATE BUTTON -->
 
-        <div style="padding:4px 0;">
+<button
+  class="btn-secondary"
+  onclick="saveCurrentAsTemplate()"
+  style="
+    width:100%;
+    margin-bottom:12px;
+    padding:12px;
+    font-size:15px;
+  "
+>
+  💾 Save Current Workout as Template
+</button>
 
-          <!-- PUSH -->
+<div class="card">
 
-          <div
-            onclick="startFromTemplate('Push Day')"
-            style="
-              padding:13px 16px;
-              display:flex;
-              align-items:center;
-              justify-content:space-between;
-              cursor:pointer;
-              border-bottom:0.5px solid var(--separator);
-            "
-          >
+  <div style="padding:4px 0;">
 
-            <div>
+    <!-- PUSH -->
 
-              <div
-                style="
-                  font-size:16px;
-                  font-weight:600;
-                "
-              >
-                Push Day
-              </div>
+    <div
+      onclick="startFromTemplate('Push Day')"
+      style="
+        padding:13px 16px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        cursor:pointer;
+        border-bottom:0.5px solid var(--separator);
+      "
+    >
 
-              <div
-                style="
-                  font-size:13px;
-                  color:var(--text3);
-                  margin-top:1px;
-                "
-              >
-                Chest · Shoulders · Triceps
-              </div>
+      <div>
 
-            </div>
+        <div
+          style="
+            font-size:16px;
+            font-weight:600;
+          "
+        >
+          Push Day
+        </div>
 
-            <span class="chevron">
-              ›
-            </span>
-
-          </div>
-
-          <!-- PULL -->
-
-          <div
-            onclick="startFromTemplate('Pull Day')"
-            style="
-              padding:13px 16px;
-              display:flex;
-              align-items:center;
-              justify-content:space-between;
-              cursor:pointer;
-              border-bottom:0.5px solid var(--separator);
-            "
-          >
-
-            <div>
-
-              <div
-                style="
-                  font-size:16px;
-                  font-weight:600;
-                "
-              >
-                Pull Day
-              </div>
-
-              <div
-                style="
-                  font-size:13px;
-                  color:var(--text3);
-                  margin-top:1px;
-                "
-              >
-                Back · Biceps · Rear Delts
-              </div>
-
-            </div>
-
-            <span class="chevron">
-              ›
-            </span>
-
-          </div>
-
-          <!-- LEGS -->
-
-          <div
-            onclick="startFromTemplate('Leg Day')"
-            style="
-              padding:13px 16px;
-              display:flex;
-              align-items:center;
-              justify-content:space-between;
-              cursor:pointer;
-            "
-          >
-
-            <div>
-
-              <div
-                style="
-                  font-size:16px;
-                  font-weight:600;
-                "
-              >
-                Leg Day
-              </div>
-
-              <div
-                style="
-                  font-size:13px;
-                  color:var(--text3);
-                  margin-top:1px;
-                "
-              >
-                Quads · Hamstrings · Glutes
-              </div>
-
-            </div>
-
-            <span class="chevron">
-              ›
-            </span>
-
-          </div>
-
+        <div
+          style="
+            font-size:13px;
+            color:var(--text3);
+            margin-top:1px;
+          "
+        >
+          Chest · Shoulders · Triceps
         </div>
 
       </div>
 
+      <span class="chevron">›</span>
+
     </div>
+
+    <!-- PULL -->
+
+    <div
+      onclick="startFromTemplate('Pull Day')"
+      style="
+        padding:13px 16px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        cursor:pointer;
+        border-bottom:0.5px solid var(--separator);
+      "
+    >
+
+      <div>
+
+        <div
+          style="
+            font-size:16px;
+            font-weight:600;
+          "
+        >
+          Pull Day
+        </div>
+
+        <div
+          style="
+            font-size:13px;
+            color:var(--text3);
+            margin-top:1px;
+          "
+        >
+          Back · Biceps · Rear Delts
+        </div>
+
+      </div>
+
+      <span class="chevron">›</span>
+
+    </div>
+
+    <!-- LEGS -->
+
+    <div
+      onclick="startFromTemplate('Leg Day')"
+      style="
+        padding:13px 16px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        cursor:pointer;
+        border-bottom:0.5px solid var(--separator);
+      "
+    >
+
+      <div>
+
+        <div
+          style="
+            font-size:16px;
+            font-weight:600;
+          "
+        >
+          Leg Day
+        </div>
+
+        <div
+          style="
+            font-size:13px;
+            color:var(--text3);
+            margin-top:1px;
+          "
+        >
+          Quads · Hamstrings · Glutes
+        </div>
+
+      </div>
+
+      <span class="chevron">›</span>
+
+    </div>
+
+    <!-- SAVED TEMPLATES -->
+
+    <div id="saved-templates"></div>
+
+  </div>
+
+</div>
 
     <!-- ACTIVE WORKOUT -->
 
@@ -278,14 +282,7 @@
         + Add Exercise
       </button>
 
-      <!-- SAVE TEMPLATE -->
-
-      <button
-        class="btn-secondary save-template-btn"
-        onclick="saveCurrentAsTemplate()"
-      >
-        💾 Save as Template
-      </button>
+    
 
       <!-- ACTION BUTTONS -->
 
@@ -333,21 +330,7 @@
 
   </div>
 
-  <!-- TEMPLATE SCREEN -->
-
-  <div
-    class="screen"
-    id="screen-templates"
-  >
-
-    <div class="section-header">
-      Saved Templates
-    </div>
-
-    <div id="saved-templates"></div>
-
-  </div>
-
+  
   <!-- HISTORY SCREEN -->
 
   <div
