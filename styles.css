@@ -604,3 +604,179 @@
   }
  
   .chevron.open { transform: rotate(90deg); }
+
+  /* =========================
+   TEMPLATE SYSTEM STYLES
+========================= */
+
+.template-card {
+  background: var(--surface);
+  border-radius: var(--border-r-lg);
+  padding: 16px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+  animation: slideIn 0.25s ease;
+}
+
+.template-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.template-name {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+
+.template-badge {
+  background: var(--ios-blue-light);
+  color: var(--ios-blue);
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.template-exercises {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.template-chip {
+  background: var(--bg);
+  color: var(--text2);
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.template-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.template-actions button {
+  flex: 1;
+}
+
+/* =========================
+   SAVE TEMPLATE BUTTON
+========================= */
+
+.save-template-btn {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* =========================
+   TEMPLATE EMPTY STATE
+========================= */
+
+.template-empty {
+  background: var(--surface);
+  border-radius: var(--border-r-lg);
+  padding: 36px 24px;
+  text-align: center;
+  color: var(--text3);
+  box-shadow: var(--shadow);
+}
+
+.template-empty-icon {
+  font-size: 42px;
+  margin-bottom: 12px;
+}
+
+.template-empty-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.template-empty-sub {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================
+   TEMPLATE SCREEN
+========================= */
+
+#screen-templates {
+  padding-top: 12px;
+}
+
+#saved-templates {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* =========================
+   IMPROVED TAB LAYOUT
+========================= */
+
+.tabs {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  min-width: fit-content;
+  white-space: nowrap;
+  padding-left: 14px;
+  padding-right: 14px;
+}
+
+/* =========================
+   TEMPLATE HOVER/ACTIVE
+========================= */
+
+.template-card:active {
+  transform: scale(0.985);
+}
+
+.template-card {
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.2s ease;
+}
+
+/* =========================
+   MOBILE IMPROVEMENTS
+========================= */
+
+@media (max-width: 480px) {
+
+  .template-name {
+    font-size: 17px;
+  }
+
+  .template-actions {
+    flex-direction: column;
+  }
+
+  .template-actions button {
+    width: 100%;
+  }
+
+  .template-chip {
+    font-size: 11px;
+  }
+}
